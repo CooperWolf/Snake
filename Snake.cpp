@@ -5,7 +5,7 @@
 #include <thread>
 #include <chrono>
 
-using std::string;
+using namespace std;
 
 
 // functions
@@ -20,9 +20,9 @@ void generateFood();
 char getMapValue(int value);
 
 // Map details
-const int mapWidth = 10;
 const int mapHeight = 20;
-const int totalMapSize = mapWidth * mapHeight;
+const int mapWidth = 40;
+const int totalMapSize = mapHeight * mapWidth;
 int map[totalMapSize];
 // Snake details
 int snakeHeadXPosition;
@@ -45,15 +45,15 @@ string difficultyChoice = "1";
 
 int main()
 {
-	std::cout << "1 = easy" << std::endl;
-	std::cout << "2 = medium" << std::endl;
-	std::cout << "3 = hard" << std::endl;
-	std::cout << "4 = extreme" << std::endl;
-	std::cout << "5 = good luck" << std::endl;
-	std::cout << "Choose your diffuclty: " << std::endl;
-	std::cin >> difficultyChoice;
+	cout << "1 = easy" << endl;
+	cout << "2 = medium" << endl;
+	cout << "3 = hard" << endl;
+	cout << "4 = extreme" << endl;
+	cout << "5 = good luck" << endl;
+	cout << "Choose your diffuclty: " << endl;
+	cin >> difficultyChoice;
 	// get the choice and them convert it to a int
-	std::stringstream temp(difficultyChoice);
+	stringstream temp(difficultyChoice);
 	int dChoice = 0;
 	temp >> dChoice;
 
@@ -110,14 +110,14 @@ void run(int difficulty)
 
 		// wait .25 seconds. Can change this value if you want the game to be faster or slower
 		// less time is faster and a higher time is slower.
-		std::this_thread::sleep_for(std::chrono::milliseconds(difficulty));
+		this_thread::sleep_for(chrono::milliseconds(difficulty));
 	}
 
 	// Print out game over text
-	std::cout << "\t\t!!!Game over!" << std::endl << "\t\tYour score is: " << snakeLength;
+	cout << "\t\tGame Over :'(" << endl << "\t\tYour score is: " << snakeLength;
 
 	// Stop console from closing instantly
-	std::cin.ignore();
+	cin.ignore();
 }
 
 // Change the direction of the snake
@@ -153,7 +153,7 @@ void move(int dx, int dy) {
 	int newy = snakeHeadYPosition + dy;
 
 	// Check if there is food at location
-	if (map[newx + newy * mapWidth] == -2) {
+	if (map[newx + newy * mapHeight] == -2) {
 		// Increase food value (body length)
 		snakeLength++;
 
@@ -162,14 +162,14 @@ void move(int dx, int dy) {
 	}
 
 	// Check location is free
-	else if (map[newx + newy * mapWidth] != 0) {
+	else if (map[newx + newy * mapHeight] != 0) {
 		running = false;
 	}
 
 	// Move head to new location
 	snakeHeadXPosition = newx;
 	snakeHeadYPosition = newy;
-	map[snakeHeadXPosition + snakeHeadYPosition * mapWidth] = snakeLength + 1;
+	map[snakeHeadXPosition + snakeHeadYPosition * mapHeight] = snakeLength + 1;
 
 }
 
@@ -185,14 +185,14 @@ void generateFood() {
 	int y = 0;
 	do {
 		// Generate random x and y values within the map
-		x = rand() % (mapWidth - 2) + 1;
-		y = rand() % (mapHeight - 2) + 1;
+		x = rand() % (mapHeight - 2) + 1;
+		y = rand() % (mapWidth - 2) + 1;
 
 		// If location is not free try again
-	} while (map[x + y * mapWidth] != 0);
+	} while (map[x + y * mapHeight] != 0);
 
 	// Place new food
-	map[x + y * mapWidth] = -2;
+	map[x + y * mapHeight] = -2;
 }
 
 // Updates the map
@@ -219,20 +219,20 @@ void updateMap() {
 void initMap()
 {
 	// Places the initual head location in middle of map
-	snakeHeadXPosition = mapWidth / 2;
-	snakeHeadYPosition = mapHeight / 2;
-	map[snakeHeadXPosition + snakeHeadYPosition * mapWidth] = 1;
+	snakeHeadXPosition = mapHeight / 2;
+	snakeHeadYPosition = mapWidth / 2;
+	map[snakeHeadXPosition + snakeHeadYPosition * mapHeight] = 1;
 
 	// Places top and bottom walls 
-	for (int x = 0; x < mapWidth; ++x) {
+	for (int x = 0; x < mapHeight; ++x) {
 		map[x] = -1;
-		map[x + (mapHeight - 1) * mapWidth] = -1;
+		map[x + (mapWidth - 1) * mapHeight] = -1;
 	}
 
 	// Places left and right walls
-	for (int y = 0; y < mapHeight; y++) {
-		map[0 + y * mapWidth] = -1;
-		map[(mapWidth - 1) + y * mapWidth] = -1;
+	for (int y = 0; y < mapWidth; y++) {
+		map[0 + y * mapHeight] = -1;
+		map[(mapHeight - 1) + y * mapHeight] = -1;
 	}
 
 	// Generates first food
@@ -245,14 +245,17 @@ void printMap()
 	// Clear the current screen
 	clearScreen();
 
-	for (int x = 0; x < mapWidth; ++x) {
-		for (int y = 0; y < mapHeight; ++y) {
+	string board = "";
+
+	for (int x = 0; x < mapHeight; ++x) {
+		for (int y = 0; y < mapWidth; ++y) {
 			// Prints the value at current x,y location
-			std::cout << getMapValue(map[x + y * mapWidth]);
+			board = board + getMapValue(map[x + y * mapHeight]);
 		}
 		// Ends the line for next x value
-		std::cout << std::endl;
+		board = board + "\n";
 	}
+	cout << board;
 }
 
 // Returns graphical character for display from map value
