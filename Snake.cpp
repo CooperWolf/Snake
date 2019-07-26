@@ -1,10 +1,15 @@
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <conio.h>
 #include <thread>
 #include <chrono>
 
+using std::string;
+
+
 // functions
-void run();
+void run(int difficulty);
 void printMap();
 void initMap();
 void move(int dx, int dy);
@@ -12,9 +17,8 @@ void updateMap();
 void changeDirection(char key);
 void clearScreen();
 void generateFood();
-
-// Variables
 char getMapValue(int value);
+
 // Map details
 const int mapWidth = 10;
 const int mapHeight = 20;
@@ -27,16 +31,68 @@ int snakeDirection; // 0 is up, 1 is down, 2 is left, 3 is right
 int snakeLength = 3; // starting length is 3
 // If the game is running
 bool running = true;
+// Difficulty
+/*
+* 800 = easy = 1
+* 600 = medium = 2
+* 400 = hard = 3
+* 200 = extreme = 4
+* 50 = good luck = 5
+*/
+// easy by default
+int difficulty = 800; 
+string difficultyChoice = "1";
 
 int main()
 {
+	std::cout << "1 = easy" << std::endl;
+	std::cout << "2 = medium" << std::endl;
+	std::cout << "3 = hard" << std::endl;
+	std::cout << "4 = extreme" << std::endl;
+	std::cout << "5 = good luck" << std::endl;
+	std::cout << "Choose your diffuclty: " << std::endl;
+	std::cin >> difficultyChoice;
+	// get the choice and them convert it to a int
+	std::stringstream temp(difficultyChoice);
+	int dChoice = 0;
+	temp >> dChoice;
+
+	switch (dChoice)
+	{
+	case 2:
+		// medium
+		difficultyChoice = 2;
+		difficulty = 600;
+		break;
+	case 3:
+		// hard
+		difficultyChoice = 3;
+		difficulty = 400;
+		break;
+	case 4:
+		// extreme
+		difficultyChoice = 4;
+		difficulty = 200;
+		break;
+	case 5:
+		// extreme
+		difficultyChoice = 5;
+		difficulty = 50;
+		break;
+	default:
+		// we default to 1 = easy
+		difficultyChoice = 1;
+		difficulty = 800;
+		break;
+	}
+
 	// Run our game
-	run();
+	run(difficulty);
 	return 0;
 }
 
 // Main game function
-void run()
+void run(int difficulty)
 {
 	// Create and draw the initial map
 	initMap();
@@ -49,14 +105,12 @@ void run()
 		// Upate the map
 		updateMap();
 
-		// Clear the screen
-		clearScreen();
-
-		// Print the map
+		// Print the current Map
 		printMap();
 
-		// wait 0.5 seconds
-		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+		// wait .25 seconds. Can change this value if you want the game to be faster or slower
+		// less time is faster and a higher time is slower.
+		std::this_thread::sleep_for(std::chrono::milliseconds(difficulty));
 	}
 
 	// Print out game over text
@@ -188,6 +242,9 @@ void initMap()
 // Prints the map to console
 void printMap()
 {
+	// Clear the current screen
+	clearScreen();
+
 	for (int x = 0; x < mapWidth; ++x) {
 		for (int y = 0; y < mapHeight; ++y) {
 			// Prints the value at current x,y location
