@@ -8,29 +8,29 @@ void run();
 void printMap();
 void initMap();
 void move(int dx, int dy);
-void update();
+void updateMap();
 void changeDirection(char key);
 void clearScreen();
 void generateFood();
 
-
+// Variables
 char getMapValue(int value);
-// Map dimensions
+// Map details
 const int mapWidth = 10;
 const int mapHeight = 20;
 const int totalMapSize = mapWidth * mapHeight;
-// The tile values for the map
 int map[totalMapSize];
 // Snake details
 int snakeHeadXPosition;
 int snakeHeadYPosition;
 int snakeDirection; // 0 is up, 1 is down, 2 is left, 3 is right
 int snakeLength = 3; // starting length is 3
-// game is running or not
+// If the game is running
 bool running = true;
 
 int main()
 {
+	// Run our game
 	run();
 	return 0;
 }
@@ -38,16 +38,16 @@ int main()
 // Main game function
 void run()
 {
-	// Initialize the map
+	// Create and draw the initial map
 	initMap();
+	// While the game is running...
 	while (running) {
-		// If a key is pressed
-		if (_kbhit()) {
-			// Change to direction determined by key pressed
+		// Check if a key is being pressed, if it is than determine if the snake needs to change directions
+		if (_kbhit())
 			changeDirection(_getch());
-		}
+
 		// Upate the map
-		update();
+		updateMap();
 
 		// Clear the screen
 		clearScreen();
@@ -66,39 +66,33 @@ void run()
 	std::cin.ignore();
 }
 
-// Changes snake direction from input
+// Change the direction of the snake
 void changeDirection(char key) {
-	/*
-	  W
-	A + D
-	  S
-
-	  1
-	4 + 2
-	  3
-	*/
 	switch (key) {
 	case 'w':
-		// 
+		// make sure they are not currently heading down
 		if (snakeDirection != 2) 
 			snakeDirection = 0;
 		break;
 	case 'd':
+		// make sure they are not currently heading left
 		if (snakeDirection != 3) 
 			snakeDirection = 1;
 		break;
 	case 's':
+		// make sure they are not currently heading up
 		if (snakeDirection != 4) 
 			snakeDirection = 2;
 		break;
 	case 'a':
+		// make sure they are not currently heading right
 		if (snakeDirection != 5) 
 			snakeDirection = 3;
 		break;
 	}
 }
 
-// Moves snake head to new location
+// updates where teh snakes head is at
 void move(int dx, int dy) {
 	// determine new head position
 	int newx = snakeHeadXPosition + dx;
@@ -148,7 +142,7 @@ void generateFood() {
 }
 
 // Updates the map
-void update() {
+void updateMap() {
 	// Move in direction indicated
 	switch (snakeDirection) {
 	case 0: move(-1, 0);
