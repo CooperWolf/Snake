@@ -4,11 +4,12 @@
 #include <conio.h>
 #include <thread>
 #include <chrono>
+#include "Settings.h"
 
 using namespace std;
 
-
 // functions
+Settings setUpGame();
 void run(int difficulty);
 void printMap();
 void initMap();
@@ -45,7 +46,6 @@ string difficultyChoice = "1";
 
 int main()
 {
-	// settings page
 	// allow user to select the board size
 	// allow user to select how many food will spawn at a time
 	// different game modes with some wild preset rules?
@@ -93,9 +93,21 @@ int main()
 		break;
 	}
 
+	// Get Load our game settings
+	setUpGame();
 	// Run our game
 	run(difficulty);
 	return 0;
+}
+
+Settings setUpGame() {
+	// game defaults
+	int difficulty = 1;
+	int width = 40;
+	int height = 20;
+
+	// create our settings object and return it
+	return Settings(difficulty, width, height);
 }
 
 // Main game function
