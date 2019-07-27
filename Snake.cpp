@@ -45,6 +45,13 @@ string difficultyChoice = "1";
 
 int main()
 {
+	// settings page
+	// allow user to select the board size
+	// allow user to select how many food will spawn at a time
+	// different game modes with some wild preset rules?
+
+
+
 	cout << "1 = easy" << endl;
 	cout << "2 = medium" << endl;
 	cout << "3 = hard" << endl;
@@ -199,19 +206,24 @@ void generateFood() {
 void updateMap() {
 	// Move in direction indicated
 	switch (snakeDirection) {
-	case 0: move(-1, 0);
+	case 0: 
+		move(-1, 0);
 		break;
-	case 1: move(0, 1);
+	case 1: 
+		move(0, 1);
 		break;
-	case 2: move(1, 0);
+	case 2: 
+		move(1, 0);
 		break;
-	case 3: move(0, -1);
+	case 3: 
+		move(0, -1);
 		break;
 	}
 
 	// Reduce snake values on map by 1
 	for (int i = 0; i < totalMapSize; i++) {
-		if (map[i] > 0) map[i]--;
+		if (map[i] > 0) 
+			map[i]--;
 	}
 }
 
@@ -235,7 +247,7 @@ void initMap()
 		map[(mapHeight - 1) + y * mapHeight] = -1;
 	}
 
-	// Generates first food
+	// Generates food
 	generateFood();
 }
 
@@ -246,7 +258,6 @@ void printMap()
 	clearScreen();
 
 	string board = "";
-
 	for (int x = 0; x < mapHeight; ++x) {
 		for (int y = 0; y < mapWidth; ++y) {
 			// Prints the value at current x,y location
@@ -261,13 +272,16 @@ void printMap()
 // Returns graphical character for display from map value
 char getMapValue(int value)
 {
-	// Returns a part of snake body
-	if (value > 0) return 'o';
+	if (value > 0) 
+		// @ = snale body part
+		return '@';
 
 	switch (value) {
-		// Return wall
-	case -1: return 'X';
-		// Return food
-	case -2: return 'O';
+	case -1: 
+		// # = Wall
+		return '#';
+	case -2: 
+		// * = Food
+		return '*';
 	}
 }
