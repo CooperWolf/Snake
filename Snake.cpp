@@ -8,8 +8,8 @@
 
 using namespace std;
 
-// functions
-Settings setUpGame();
+#pragma region functions
+Settings setUpGame(Settings* currentSettings);
 void run(int difficulty);
 void printMap();
 void initMap();
@@ -19,7 +19,9 @@ void changeDirection(char key);
 void clearScreen();
 void generateFood();
 char getMapValue(int value);
+#pragma endregion
 
+#pragma region Variables
 // Map details
 const int mapHeight = 20;
 const int mapWidth = 40;
@@ -41,8 +43,9 @@ bool running = true;
 * 50 = good luck = 5
 */
 // easy by default
-int difficulty = 800; 
-string difficultyChoice = "1";
+int speed = 800; 
+int difficultyChoice = 1;
+#pragma endregion
 
 int main()
 {
@@ -50,8 +53,25 @@ int main()
 	// allow user to select how many food will spawn at a time
 	// different game modes with some wild preset rules?
 
+	// Settings object with default vaslues to start
+	Settings gameSettings = Settings(difficultyChoice, mapWidth, mapHeight);
+	// Get Load our game settings
+	setUpGame(&gameSettings);
+	// Run our game
+	run(speed);
+	return 0;
+}
+
+Settings setUpGame(Settings *currentSettings) {
+	// game defaults
+	int difficulty = 1;
+	int width = 40;
+	int height = 20;
 
 
+
+
+	/*
 	cout << "1 = easy" << endl;
 	cout << "2 = medium" << endl;
 	cout << "3 = hard" << endl;
@@ -92,19 +112,11 @@ int main()
 		difficulty = 800;
 		break;
 	}
+	*/
 
-	// Get Load our game settings
-	setUpGame();
-	// Run our game
-	run(difficulty);
-	return 0;
-}
 
-Settings setUpGame() {
-	// game defaults
-	int difficulty = 1;
-	int width = 40;
-	int height = 20;
+
+
 
 	// create our settings object and return it
 	return Settings(difficulty, width, height);
