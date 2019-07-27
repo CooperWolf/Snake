@@ -9,7 +9,7 @@
 using namespace std;
 
 #pragma region functions
-Settings setUpGame(Settings* currentSettings);
+Settings setUpGame(Settings *currentSettings);
 void run(int difficulty);
 void printMap();
 void initMap();
@@ -49,10 +49,6 @@ int difficultyChoice = 1;
 
 int main()
 {
-	// allow user to select the board size
-	// allow user to select how many food will spawn at a time
-	// different game modes with some wild preset rules?
-
 	// Settings object with default vaslues to start
 	Settings gameSettings = Settings(difficultyChoice, mapWidth, mapHeight);
 	// Get Load our game settings
@@ -68,10 +64,6 @@ Settings setUpGame(Settings *currentSettings) {
 	int width = 40;
 	int height = 20;
 
-
-
-
-	/*
 	cout << "1 = easy" << endl;
 	cout << "2 = medium" << endl;
 	cout << "3 = hard" << endl;
@@ -112,11 +104,6 @@ Settings setUpGame(Settings *currentSettings) {
 		difficulty = 800;
 		break;
 	}
-	*/
-
-
-
-
 
 	// create our settings object and return it
 	return Settings(difficulty, width, height);
