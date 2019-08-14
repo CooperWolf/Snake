@@ -1,10 +1,6 @@
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <conio.h>
-#include <thread>
-#include <chrono>
-#include "Settings.h"
+// defines certain functions on Linux that arent 
+// part of the standard library (_kbhit and _getch)
+#include "Snake.h"
 
 using namespace std;
 
@@ -64,43 +60,53 @@ Settings setUpGame(Settings *currentSettings) {
 	int width = 40;
 	int height = 20;
 
-	cout << "1 = easy" << endl;
-	cout << "2 = medium" << endl;
-	cout << "3 = hard" << endl;
-	cout << "4 = extreme" << endl;
-	cout << "5 = good luck" << endl;
-	cout << "Choose your diffuclty: " << endl;
-	cin >> difficultyChoice;
-	// get the choice and them convert it to a int
-	stringstream temp(difficultyChoice);
-	int dChoice = 0;
-	temp >> dChoice;
+	try {
+		cout << "1 = easy" << endl;
+		cout << "2 = medium" << endl;
+		cout << "3 = hard" << endl;
+		cout << "4 = extreme" << endl;
+		cout << "5 = good luck" << endl;
+		cout << "Choose your diffuclty: " << endl;
+		cin >> difficultyChoice;
+		// get the choice and them convert it to a int
+	}
+	catch(std::exception& ex) {
+		cout << "Error choosing difficulty: " 
+		<< ex.what() << endl << flush;
+		
+		// if invalid difficulty is typed in, may just want to 
+		// go with the default instead of exiting but im lazy
+		exit(1); 
+	}
+
+	// not sure why the stringstream???
+	//stringstream temp(difficultyChoice);
+	//int dChoice = 0;
+	//temp >> dChoice;
+
+	int dChoice = difficultyChoice;
 
 	switch (dChoice)
 	{
 	case 2:
 		// medium
-		difficultyChoice = 2;
 		difficulty = 600;
 		break;
 	case 3:
 		// hard
-		difficultyChoice = 3;
 		difficulty = 400;
 		break;
 	case 4:
 		// extreme
-		difficultyChoice = 4;
 		difficulty = 200;
 		break;
 	case 5:
 		// extreme
-		difficultyChoice = 5;
 		difficulty = 50;
 		break;
 	default:
 		// we default to 1 = easy
-		difficultyChoice = 1;
+		difficultyChoice = 1; // only one that doesnt necessarily match up with the case
 		difficulty = 800;
 		break;
 	}
